@@ -13,6 +13,7 @@ from celery.utils.log import get_task_logger
 logger = get_task_logger(__name__)
 
 
+@shared_task(bind=True)
 class CeleryHaystackSignalHandler(Task):
     using = settings.CELERY_HAYSTACK_DEFAULT_ALIAS
     max_retries = settings.CELERY_HAYSTACK_MAX_RETRIES
@@ -132,6 +133,7 @@ class CeleryHaystackSignalHandler(Task):
                 raise ValueError("Unrecognized action %s" % action)
 
 
+@shared_task(bind=True)
 class CeleryHaystackUpdateIndex(Task):
     """
     A celery task class to be used to call the update_index management
