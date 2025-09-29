@@ -23,7 +23,7 @@ def get_update_task(task_path=None):
     except AttributeError:
         raise ImproperlyConfigured('Module "%s" does not define a "%s" '
                                    'class.' % (module, attr))
-    return Task()
+    return Task
 
 
 def enqueue_task(action, instance, **kwargs):
@@ -38,8 +38,8 @@ def enqueue_task(action, instance, **kwargs):
     if settings.CELERY_HAYSTACK_COUNTDOWN:
         options['countdown'] = settings.CELERY_HAYSTACK_COUNTDOWN
 
-    task = get_update_task()
-    task_func = lambda: task.apply_async(  # noqa: E731
+    task_class = get_update_task()
+    task_func = lambda: task_class.apply_async(  # noqa: E731
         (action, identifier), kwargs, **options
     )
 
