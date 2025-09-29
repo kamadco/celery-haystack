@@ -39,7 +39,8 @@ def enqueue_task(action, instance, **kwargs):
         options['countdown'] = settings.CELERY_HAYSTACK_COUNTDOWN
 
     task_class = get_update_task()
-    task_func = lambda: task_class.apply_async(  # noqa: E731
+    task_instance = task_class()
+    task_func = lambda: task_instance.apply_async(  # noqa: E731
         (action, identifier), kwargs, **options
     )
 
